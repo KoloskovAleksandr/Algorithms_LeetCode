@@ -82,16 +82,14 @@ https://leetcode.com/problems/linked-list-cycle/
 ```C++
 class Solution {
 public:
-    bool hasCycle(ListNode *head) {
-        ListNode *Achill = head, *tort = head;
-	      while (Achill != NULL && Achill->next != NULL) {
-		        tort = tort->next;
-		        Achill = Achill->next->next;
-            if(Achill == tort)
-            break;
-	      }
-	      if (Achill == NULL || Achill->next == NULL)
-		        return false;
+    bool hasCycle(ListNode *head){
+        ListNode *fast = head, *slow = head;
+	while(Achill != NULL && Achill->next != NULL && Achill != slow){
+	    slow = slow->next;
+	    fast = fast->next->next;
+	}
+	if (fast == NULL || fast->next == NULL)
+            return false;
         return true;        
     }
 };
@@ -102,21 +100,21 @@ https://leetcode.com/problems/linked-list-cycle-ii/
 class Solution {
 public:
      ListNode *detectCycle(ListNode *head) {
-        ListNode *Achill = head, *tort = head;
-        while (Achill != NULL && Achill->next != NULL) {
-            tort = tort->next;
-            Achill = Achill->next->next;
-            if(Achill == tort)
+        ListNode *fast = head, *slow = head;
+        while (fast != NULL && fast->next != NULL) {
+            slow = slow->next;
+            fast = fast->next->next;
+            if(fast == slow)
             break;
         }
-        if (Achill == NULL || Achill->next == NULL)
+        if (fast == NULL || fast->next == NULL)
             return NULL;
-        tort = head;
-        while (Achill != tort){
-            Achill = Achill->next;
-            tort = tort->next;
+        slow = head;
+        while (fast != slow){
+            fast = fast->next;
+            slow = slow->next;
         }
-        return tort;       
+        return slow;       
     }
 };
 ```
@@ -362,34 +360,34 @@ public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         if(headA == NULL || headB == NULL)
             return NULL;
-        ListNode *tortA = headA, *tortB = headB;
+        ListNode *listA = headA, *listB = headB;
         int i = 0,j = 0, k;
-        while(tortA->next != NULL){
-            tortA = tortA->next;
+        while(listA->next != NULL){
+            listA = listA->next;
             i++;
         }
-        while(tortB->next != NULL){
-            tortB = tortB->next;
+        while(listB->next != NULL){
+            listB = listB->next;
             j++;
         }
-        if(tortA != tortB)
+        if(listA != listB)
             return 0;
-        tortA = headA, tortB = headB;
+        listA = headA, listB = headB;
         if(j <= i){
             k = i - j;
             for(i = 0; i < k; i++)
-                tortA = tortA->next;
-            while(tortA != tortB)
-                tortA = tortA->next, tortB = tortB->next;
-            return tortA;            
+                listA = listA->next;
+            while(listA != listB)
+                listA = listA->next, listB = listB->next;
+            return listA;            
         }
         else{
             k = j - i;
             for(j = 0; j < k; j++)
-                tortB = tortB->next;
-            while(tortA != tortB)
-                tortA = tortA->next, tortB = tortB->next;
-            return tortB;
+                listB = listB->next;
+            while(listA != listB)
+                listA = listA->next, listB = listB->next;
+            return listB;
         }        
     }
 };
