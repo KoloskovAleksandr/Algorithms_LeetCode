@@ -20,27 +20,20 @@ https://leetcode.com/problems/remove-nth-node-from-end-of-list/
 ```C++
 class Solution {
 public:
-   ListNode* removeNthFromEnd(ListNode* head, int n) {
-        int i, length = 0;
-        ListNode *tort = head, *buf;
-        while(tort != NULL){
-            tort = tort->next;
-            length++;
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode prehead(0);
+        ListNode *deleteList = &prehead, *buf, *listEnd = head;
+        deleteList->next = head;        
+        while(n--)
+            listEnd = listEnd->next;
+        while(listEnd){
+            listEnd = listEnd->next;
+            deleteList = deleteList->next;
         }
-        if(length - n == 0){
-            buf = head;
-            head = head->next;
-            delete(buf);
-            return head;
-        }
-        for(tort = head, i = 1; i < length - n; i++)
-            tort = tort->next;
-        if(tort->next == NULL)
-            return head;
-        buf = tort->next;
-        tort->next = buf->next;
-        delete(buf);        
-        return head;             
+        buf = deleteList->next->next;
+        delete(deleteList->next);
+        deleteList->next = buf;     
+        return prehead.next;         
     }
 };
 ```
@@ -50,37 +43,34 @@ https://leetcode.com/problems/merge-two-sorted-lists/
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        if(l1 == NULL && l2 == NULL)
-            return NULL;
         if(l1 == NULL)
             return l2;
         if(l2 == NULL)
             return l1;        
-        ListNode *i = l1, *j = l2, *k;
-        if(i->val >= j->val){
-            k = l2;
-            j = j->next;
+        ListNode *first = l1, *second = l2, *buf;
+        if(first->val >= second->val){
+            buf = l2;
+            second = second->next;
         }
         else{
-            k = l1;
-            i = i->next;
+            buf = l1;
+            first = first->next;
         }        
-        while(i != NULL && j != NULL){
-            if(i->val > j->val){
-                k->next = j;
-                j = j->next;
-                k = k->next;
+        while(first != NULL && second != NULL){
+            if(first->val > second->val){
+                buf->next = second;
+                second = second->next;
             }
             else{
-                k->next = i;
-                i = i->next;
-                k = k->next;
+                buf->next = first;
+                first = first->next;
             }
+	    buf = buf->next;
         }
-        if(i == NULL)
-            k->next = j;
+        if(first == NULL)
+            buf->next = second;
         else
-            k->next = i;
+            buf->next = first;
         if(l1->val < l2->val)
             return l1;
         return l2;        
