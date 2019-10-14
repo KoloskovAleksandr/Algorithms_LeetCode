@@ -47,30 +47,30 @@ public:
             return l2;
         if(l2 == NULL)
             return l1;        
-        ListNode *first = l1, *second = l2, *buf;
+        ListNode *first = l1, *second = l2, *sorted;
         if(first->val >= second->val){
-            buf = l2;
+            sorted = l2;
             second = second->next;
         }
         else{
-            buf = l1;
+            sorted = l1;
             first = first->next;
         }        
         while(first != NULL && second != NULL){
             if(first->val > second->val){
-                buf->next = second;
+                sorted->next = second;
                 second = second->next;
             }
             else{
-                buf->next = first;
+                sorted->next = first;
                 first = first->next;
             }
-	    buf = buf->next;
+	    sorted = sorted->next;
         }
         if(first == NULL)
-            buf->next = second;
+            sorted->next = second;
         else
-            buf->next = first;
+            sorted->next = first;
         if(l1->val < l2->val)
             return l1;
         return l2;        
@@ -179,35 +179,35 @@ public:
         head->next = NULL;
         return fast;
     }
-     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         if(l1 == NULL)
             return l2;
         if(l2 == NULL)
             return l1;        
-        ListNode *first = l1, *second = l2, *buf;
+        ListNode *first = l1, *second = l2, *sorted;
         if(first->val >= second->val){
-            buf = l2;
+            sorted = l2;
             second = second->next;
         }
         else{
-            buf = l1;
+            sorted = l1;
             first = first->next;
         }        
         while(first != NULL && second != NULL){
             if(first->val > second->val){
-                buf->next = second;
+                sorted->next = second;
                 second = second->next;
             }
             else{
-                buf->next = first;
+                sorted->next = first;
                 first = first->next;
             }
-	    buf = buf->next;
+	    sorted = sorted->next;
         }
         if(first == NULL)
-            buf->next = second;
+            sorted->next = second;
         else
-            buf->next = first;
+            sorted->next = first;
         if(l1->val < l2->val)
             return l1;
         return l2;        
