@@ -126,34 +126,26 @@ public:
     void reorderList(ListNode* head) {        
         if(head == NULL || head->next == NULL || head->next->next == NULL)
             return;
-        ListNode *first = head, *second = middleNode(head), *tort1 = head, *tort2;
-        tort2 = second = reverseList(second);
+        ListNode *first = head, *second = middleNode(head), *buf1 = head, *buf2;
+        buf2 = second = reverseList(second);
         while(first != NULL && second != NULL){
-            tort1 = first->next;
-            tort2 = second->next;
+            buf1 = first->next;
+            buf2 = second->next;
             first->next = second;
-            second->next = tort1;
-            first = tort1;
-            second = tort2;
+            second->next = buf1;
+            first = buf1;
+            second = buf2;
         }   
     }
     ListNode* middleNode(ListNode* head) {
-        ListNode* tort = head, *buf;
-        int length = 0;
-        while(tort != NULL){
-            tort = tort->next;
-            length++;
+        ListNode* fast = head->next;
+        while (fast && fast->next) {              
+          fast = fast->next->next;           
+          head = head->next;
         }
-        if(length % 2)
-            length = length / 2 + 1;
-        else
-            length = length / 2;
-        tort = head;
-        for(int i = 0; i < length - 1; i++)
-            tort = tort->next;
-            buf = tort->next;
-            tort->next = NULL; 
-        return buf;
+      fast = head->next;
+      head->next = NULL;
+      return fast;
     }
     ListNode* reverseList(ListNode* head) {
         ListNode* left = NULL, *cur = head, *right;     	
@@ -178,53 +170,44 @@ public:
         return mergeTwoLists(sortList(head), sortList(middleNode(head)));
     }
     ListNode* middleNode(ListNode* head) {
-        ListNode* tort = head, *buf;
-        int length = 0;
-        while(tort != NULL){
-            tort = tort->next;
-            length++;
+        ListNode* fast = head->next;
+        while (fast && fast->next) {              
+          fast = fast->next->next;           
+          head = head->next;
         }
-        length = length / 2;
-        tort = head;
-        for(int i = 0; i < length - 1; i++)
-            tort = tort->next;
-            buf = tort->next;
-            tort->next = NULL; 
-        return buf;
+      fast = head->next;
+      head->next = NULL;
+      return fast;
     }
      ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        if(l1 == NULL && l2 == NULL)
-            return NULL;
         if(l1 == NULL)
             return l2;
         if(l2 == NULL)
-            return l1;
-        
-        ListNode *i = l1, *j = l2, *k;
-        if(i->val >= j->val){
-            k = l2;
-            j = j->next;
+            return l1;        
+        ListNode *first = l1, *second = l2, *buf;
+        if(first->val >= second->val){
+            buf = l2;
+            second = second->next;
         }
         else{
-            k = l1;
-            i = i->next;
+            buf = l1;
+            first = first->next;
         }        
-        while(i != NULL && j != NULL){
-            if(i->val > j->val){
-                k->next = j;
-                j = j->next;
-                k = k->next;
+        while(first != NULL && second != NULL){
+            if(first->val > second->val){
+                buf->next = second;
+                second = second->next;
             }
             else{
-                k->next = i;
-                i = i->next;
-                k = k->next;
+                buf->next = first;
+                first = first->next;
             }
+	    buf = buf->next;
         }
-        if(i == NULL)
-            k->next = j;
+        if(first == NULL)
+            buf->next = second;
         else
-            k->next = i;
+            buf->next = first;
         if(l1->val < l2->val)
             return l1;
         return l2;        
@@ -241,12 +224,12 @@ public:
             head = head->next;
         if(head == NULL)
             return NULL;
-        ListNode* tort = head;
-        while(tort->next != NULL){
-            if(tort->next->val == val)
-                tort->next = tort->next->next;
+        ListNode* cur = head;
+        while(cur->next != NULL){
+            if(cur>next->val == val)
+                cur->next = cur->next->next;
             else
-                tort = tort->next;            
+                cur = cur->next;            
         }
         return head;   
     }
@@ -291,22 +274,14 @@ public:
         return false;       
     }
     ListNode* middleNode(ListNode* head) {
-        ListNode* tort = head, *buf;
-        int length = 0;
-        while(tort != NULL){
-            tort = tort->next;
-            length++;
+        ListNode* fast = head->next;
+        while (fast && fast->next) {              
+          fast = fast->next->next;           
+          head = head->next;
         }
-        if(length % 2)
-            length = length / 2 + 1;
-        else
-            length = length / 2;
-        tort = head;
-        for(int i = 0; i < length - 1; i++)
-            tort = tort->next;
-            buf = tort->next;
-            tort->next = NULL; 
-        return buf;
+      fast = head->next;
+      head->next = NULL;
+      return fast;
     }
     ListNode* reverseList(ListNode* head) {
         ListNode* left = NULL, *cur = head, *right;        	
@@ -338,17 +313,14 @@ https://leetcode.com/problems/middle-of-the-linked-list/
 class Solution {
 public:
     ListNode* middleNode(ListNode* head) {
-        ListNode* tort = head;
-        int length = 0;
-        while(tort != NULL){
-            tort = tort->next;
-            length++;
+        ListNode* fast = head->next;
+        while (fast && fast->next) {
+            head = head->next;    
+            fast = fast->next->next;       
         }
-        length = length / 2;
-        tort = head;
-        for(int i = 0; i < length; i++)
-            tort = tort->next;
-        return tort;
+        if(fast)
+            head = head->next;
+      return head;
     }
 };
 ```
