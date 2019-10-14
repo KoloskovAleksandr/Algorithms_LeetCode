@@ -84,7 +84,7 @@ class Solution {
 public:
     bool hasCycle(ListNode *head){
         ListNode *fast = head, *slow = head;
-	while(Achill != NULL && Achill->next != NULL && Achill != slow){
+	while(fast != NULL && fast->next != NULL && fast != slow){
 	    slow = slow->next;
 	    fast = fast->next->next;
 	}
