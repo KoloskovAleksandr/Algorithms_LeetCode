@@ -124,7 +124,7 @@ https://leetcode.com/problems/reorder-list/
 class Solution {
 public:
     void reorderList(ListNode* head) {        
-        if(head == NULL || head->next == NULL || head->next->next == NULL)
+        if(head == NULL)
             return;
         ListNode *first = head, *second = middleNode(head), *buf1 = head, *buf2;
         buf2 = second = reverseList(second);
@@ -329,35 +329,32 @@ public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         if(headA == NULL || headB == NULL)
             return NULL;
-        ListNode *listA = headA, *listB = headB;
-        int i = 0,j = 0, k;
-        while(listA->next != NULL){
-            listA = listA->next;
+        ListNode *curA = headA, *curB = headB;
+        int i = 0, j = 0, delta;
+        while(curA->next != NULL){
+            curA = curA->next;
             i++;
         }
-        while(listB->next != NULL){
-            listB = listB->next;
+        while(curB->next != NULL){
+            curB = curB->next;
             j++;
         }
-        if(listA != listB)
+        if(curA != curB)
             return 0;
-        listA = headA, listB = headB;
+        curA = headA, curB = headB;
         if(j <= i){
-            k = i - j;
-            for(i = 0; i < k; i++)
-                listA = listA->next;
-            while(listA != listB)
-                listA = listA->next, listB = listB->next;
-            return listA;            
+            delta = i - j;
+            for(i = 0; i < delta; i++)
+                curA = curA->next;    
         }
         else{
-            k = j - i;
-            for(j = 0; j < k; j++)
-                listB = listB->next;
-            while(listA != listB)
-                listA = listA->next, listB = listB->next;
-            return listB;
-        }        
+            delta = j - i;
+            for(j = 0; j < delta; j++)
+                curB = curB->next;
+        }
+        while(curA != curB)
+                curA = curA->next, curB = curB->next;
+            return curA;  
     }
 };
 ```
