@@ -140,12 +140,12 @@ public:
     ListNode* middleNode(ListNode* head) {
         ListNode* fast = head->next;
         while (fast && fast->next) {              
-          fast = fast->next->next;           
-          head = head->next;
+            fast = fast->next->next;           
+            head = head->next;
         }
-      fast = head->next;
-      head->next = NULL;
-      return fast;
+        fast = head->next;
+        head->next = NULL;
+        return fast;
     }
     ListNode* reverseList(ListNode* head) {
         ListNode* left = NULL, *cur = head, *right;     	
@@ -172,12 +172,12 @@ public:
     ListNode* middleNode(ListNode* head) {
         ListNode* fast = head->next;
         while (fast && fast->next) {              
-          fast = fast->next->next;           
-          head = head->next;
+            fast = fast->next->next;           
+            head = head->next;
         }
-      fast = head->next;
-      head->next = NULL;
-      return fast;
+        fast = head->next;
+        head->next = NULL;
+        return fast;
     }
      ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         if(l1 == NULL)
@@ -260,28 +260,25 @@ public:
     bool isPalindrome(ListNode* head) {
         if(head == NULL)
             return true;
-        int i = 1;
         ListNode *first = head, *second = middleNode(head);
         second = reverseList(second);
-        while(first && second && i){
+        while(second){
             if(first->val != second-> val)
-                i = 0;
+                return false;
             first = first->next;
             second = second->next;
         }
-        if(i)
-            return true;
-        return false;       
+        return true;
     }
     ListNode* middleNode(ListNode* head) {
         ListNode* fast = head->next;
         while (fast && fast->next) {              
-          fast = fast->next->next;           
-          head = head->next;
+            fast = fast->next->next;           
+            head = head->next;
         }
-      fast = head->next;
-      head->next = NULL;
-      return fast;
+        fast = head->next;
+        head->next = NULL;
+        return fast;
     }
     ListNode* reverseList(ListNode* head) {
         ListNode* left = NULL, *cur = head, *right;        	
@@ -313,7 +310,7 @@ https://leetcode.com/problems/middle-of-the-linked-list/
 class Solution {
 public:
     ListNode* middleNode(ListNode* head) {
-        ListNode* fast = head->next;
+    	ListNode* fast = head->next;
         while (fast && fast->next) {
             head = head->next;    
             fast = fast->next->next;       
