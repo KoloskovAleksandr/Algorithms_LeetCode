@@ -124,12 +124,11 @@ https://leetcode.com/problems/subtree-of-another-tree/submissions/
 class Solution {
 public:
     bool isSubtree(TreeNode* s, TreeNode* t){
-        return s && (equals(s, t) || isSubtree(s->left, t) || isSubtree(s->right, t));
+        return s && (isSameTree(s, t) || isSubtree(s->left, t) || isSubtree(s->right, t));
     }
-    bool equals(TreeNode* x, TreeNode* y){
-        if(!x && !y)  return true;
-        if(!x || !y)  return false;
-        return x->val == y->val && equals(x->left, y->left) && equals(x->right,y->right);
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if (p == NULL || q == NULL)  return (p == q);
+        return (p->val == q->val && isSameTree(p->left, q->left) && isSameTree(p->right, q->right));       
     }
 };
 ```
@@ -212,18 +211,18 @@ class BSTIterator {
     stack<TreeNode*> Stack;
 public:
     BSTIterator(TreeNode* root) {
-        pushAll(root);        
+        pushLeftEdge(root);        
     }
     int next() {
         TreeNode *tmp = Stack.top();
         Stack.pop();
-        pushAll(tmp->right);
+        pushLeftEdge(tmp->right);
         return tmp->val;        
     }
     bool hasNext() {
         return !Stack.empty();        
     }
-    void pushAll(TreeNode *node) {
+    void pushLeftEdge(TreeNode *node) {
         for (; node != NULL; Stack.push(node), node = node->left);
     }
 };
@@ -234,7 +233,21 @@ public:
 https://www.lintcode.com/problem/inorder-successor-in-bst/
 
 ```C++
-
+class Solution {
+public:
+    TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
+        TreeNode* succ = NULL;
+        if(root){
+            if(p->right)
+                for(succ = p->right; succ->left; succ = succ->left);
+            else
+                while (root->val != p->val)
+                    root->val > p->val ? (succ = root, root = root->left) : root = root->right; 
+            return succ;
+        }
+        return root;
+    }
+};
 ```
 
 ## Lowest Common Ancestor of a Binary Search Tree
@@ -245,15 +258,18 @@ https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        int parentVal = root->val;
         int pVal = p->val;
         int qVal = q->val;
-
-        if (pVal > parentVal && qVal > parentVal)
-            return lowestCommonAncestor(root->right, p, q);
-        else if (pVal < parentVal && qVal < parentVal)
-            return lowestCommonAncestor(root->left, p, q);
-        else return root;
+        TreeNode* node = root;
+        while(node) {
+            int parentVal = node->val;
+            if (pVal > parentVal && qVal > parentVal)
+                node = node->right;
+            else if (pVal < parentVal && qVal < parentVal)
+                node = node->left;
+            else return node;
+        }
+        return {};
     }
 };
 ```
@@ -267,14 +283,14 @@ class Solution {
 public:
     TreeNode* ans = NULL;
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        recurseTree(root, p, q);
+        scanTree(root, p, q);
         return ans;        
     }
-    bool recurseTree(TreeNode* currentNode, TreeNode* p, TreeNode* q) {
+    bool scanTree(TreeNode* currentNode, TreeNode* p, TreeNode* q) {
         if (!currentNode)   return false;
 
-        int left = recurseTree(currentNode->left, p, q);
-        int right = recurseTree(currentNode->right, p, q);
+        int left = scanTree(currentNode->left, p, q);
+        int right = scanTree(currentNode->right, p, q);
         int mid = (currentNode == p || currentNode == q);
         if (mid + left + right >= 2) 
             ans = currentNode;
