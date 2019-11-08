@@ -66,6 +66,24 @@ https://leetcode.com/problems/insert-interval/
 ```C++
 class Solution {
 public:
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        vector<vector<int>> res;
+        for(auto i : intervals){
+            if(i[0] < newInterval[0]) res.push_back(i);
+            else break;
+        }
+        if(!res.size() || res.back()[1] < newInterval[0]) res.push_back(newInterval);
+        else if(res.back()[1] >= newInterval[0])
+            res.back()[1] = res.back()[1] > newInterval[1] ? res.back()[1] : newInterval[1];
+        for(auto i : intervals){
+            if(res.back()[1] < i[0])  res.push_back(i);
+            else res.back()[1] = res.back()[1] > i[1] ? res.back()[1] : i[1];
+        }
+        return res;
+    }
+};
 
 };
 ```
