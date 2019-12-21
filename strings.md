@@ -23,7 +23,7 @@ class Solution {
     int maxstr = 0, track = 0, n = s.length();
     for(int i = 0; i < n; i++) {
       while(table[s[i]])
-      table[s[track++]] = 0;
+        table[s[track++]] = 0;
       table[s[i]] = 1;
       maxstr = max(maxstr, i - track + 1);        
     }
